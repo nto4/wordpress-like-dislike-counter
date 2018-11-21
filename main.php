@@ -10,6 +10,31 @@ License: GPLv2 or later
 */
 
 // Runs when plugin is activated and creates new database field
+
+
+//***if page is single or page add a new  like button !
+function mbCallBack($content){
+    if(is_single() || is_page() ){
+$content = " $content - [idev_liker]";}
+return $content;
+}
+//***taglar için otomatik bir sayfa oluşturuldu
+add_filter('the_content', 'mbCallBack');
+//Tagları gostermek için sayfa oluşturuldu
+function add_my_custom_page() {
+    // Create post object
+    $my_post = array(
+        'post_title'    => wp_strip_all_tags( 'TaglarOtomatik' ),
+        'post_content'  => 'Taglar Otomatik Oluşturuldu',
+        'post_status'   => 'publish',
+        'post_author'   => 1,
+        'post_type'     => 'page',
+    );
+
+    // Insert the post into the database ***post db ye yollandı
+    wp_insert_post( $my_post );
+}
+
 register_activation_hook(__FILE__,'like_dislike_counter_install');
 add_action('admin_init', 'ldc_plugin_redirect');
 function ldc_plugin_activate() {
